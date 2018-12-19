@@ -15,7 +15,7 @@ export default createStackNavigator(
     Login: Login
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "CoffeeList",
     navigationOptions: {
       headerTintColor: "white",
       headerStyle: {

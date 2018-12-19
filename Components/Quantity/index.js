@@ -1,6 +1,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 
+import AuthStore from "../../store/authStore";
+
 // Navigation
 import { withNavigation } from "react-navigation";
 
@@ -9,11 +11,14 @@ import { Text, Button, Icon } from "native-base";
 
 //Store
 import CartStore from "../../store/cartStore";
+import authStore from "../../store/authStore";
 
 class Quantity extends React.Component {
   navigate() {
-    let route = this.props.route;
-    this.props.navigation.navigate(route);
+    if (authStore.isAuthenticated) {
+      let route = this.props.route;
+      this.props.navigation.navigate(route);
+    } else this.props.navigation.navigate("Login");
   }
 
   render() {

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import authStore from "../../store/authStore";
+
 // NativeBase Components
 import {
   Text,
@@ -16,6 +18,30 @@ import {
 } from "native-base";
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
+
+    this.handleUsername = this.handleUsername.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
+  }
+
+  componentDidMount() {
+    if (authStore.isAuthenticated) {
+      this.props.navigation.replace("CoffeeList");
+    }
+  }
+  handleUsername(value) {
+    this.setState({ username: value });
+  }
+
+  handlePassword(value) {
+    this.setState({ password: value });
+  }
+
   static navigationOptions = {
     title: "Login"
   };
@@ -38,7 +64,11 @@ class Login extends Component {
                     marginBottom: 10
                   }}
                 >
-                  <Input autoCorrect={false} autoCapitalize="none" />
+                  <Input
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value => this.handleUsername(value)}
+                  />
                 </Item>
                 <Body>
                   <Label style={{ color: "white" }}>Password</Label>
@@ -51,6 +81,7 @@ class Login extends Component {
                     autoCorrect={false}
                     secureTextEntry
                     autoCapitalize="none"
+                    onChangeText={value => this.handlePassword(value)}
                   />
                 </Item>
               </Form>
@@ -59,14 +90,18 @@ class Login extends Component {
           <Button
             full
             success
-            onPress={() => this.props.navigation.replace("CoffeeList")}
+            onPress={() =>
+              authStore.loginUser(this.state, this.props.navigation)
+            }
           >
             <Text>Login</Text>
           </Button>
           <Button
             full
             warning
-            onPress={() => this.props.navigation.replace("CoffeeList")}
+            onPress={() =>
+              authStore.registerUser(this.state, this.props.navigation)
+            }
           >
             <Text>Register</Text>
           </Button>
